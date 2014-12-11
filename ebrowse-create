@@ -1,0 +1,13 @@
+#!/bin/bash
+
+endings="hpp h cpp"
+
+(
+for e in $endings
+do
+	for dir in $@
+	do
+		find $dir -name "*.$e"
+	done
+done
+) | ebrowse
