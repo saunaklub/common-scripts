@@ -1,0 +1,7 @@
+#!/bin/sh
+
+for win_id in `xwininfo | grep 'id:' | cut -d' ' -f4`
+do
+  sleep 5
+  import -window $win_id ~/window_`date +%y%m%d_%H%M%S`.png
+done
