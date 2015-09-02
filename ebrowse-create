@@ -1,11 +1,12 @@
 #!/bin/bash
 
-endings="hpp h cpp"
+dirs=${@:-.}
+endings="hpp h cpp c"
 
 (
 for e in $endings
 do
-	for dir in $@
+	for dir in $dirs
 	do
 		find $dir -name "*.$e"
 	done
