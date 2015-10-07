@@ -1,0 +1,4 @@
+#!/bin/bash
+
+outfile=$(echo $1 | sed -e 's/\(.*\.\).*/\1avi/')
+ffmpeg -i "$1" -vcodec rawvideo -pix_fmt yuv420p -an "$outfile"
