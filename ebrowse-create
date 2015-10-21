@@ -1,14 +1,18 @@
 #!/bin/bash
 
-dirs=${@:-.}
-endings="hpp h cpp c"
+suffixes="h hpp c cpp"
+directories="."
 
-(
-for e in $endings
-do
-	for dir in $dirs
-	do
-		find $dir -name "*.$e"
-	done
-done
-) | ebrowse
+optstring=":s:d:"
+while getopts $optstring opt ; do
+    case $opt in
+        s)  suffixes=$OPTARG ;;
+        d)  directories=$OPTARG ;;
+    esac
+done            
+
+for dir in $(tr " " " " <<< $directories) ; do
+    for suffix in $(tr " " " " <<< $suffixes) ; do
+	    find $dir -name "*.$suffix"
+    done
+done | ebrowse
