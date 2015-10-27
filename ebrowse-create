@@ -1,6 +1,6 @@
 #!/bin/bash
 
-suffixes="h hpp c cpp"
+suffixes="h hpp hxx c cpp cxx"
 directories="."
 
 optstring=":s:d:"
