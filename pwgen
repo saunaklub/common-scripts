@@ -1,20 +1,18 @@
 #!/bin/bash
 
-hash_cmd=sha512sum
-digits=32
-
 print_help() {
     cat <<EOF
 pwgen - safe password generator
 
-Usage: pwgen [−c hash_command] [−d output_digits] password
+Usage: pwgen [−c hash_command] [−d output_digits] [-s] password
 -c   Hash command (default sha512sum).
 -d   Output digits (default 32).
+-s   Split output into blocks of 4 digits.
 
 Generate an output_digits-long prefix of a password hash, created by
-passing 'password' to hash_command, and seperate the output into
-blocks of 4 digits. The default output length is 32 hex digits, which
-corresponds to 128 bits of entropy.
+passing 'password' to hash_command, and optionally split the output
+into blocks of 4 digits. The default output length is 32 hex digits,
+which corresponds to 128 bits of entropy.
 
 The program is intended for quick hashing of passwords and printing
 the result in a readable form for entry in web forms and such. Please
@@ -23,15 +21,27 @@ cryptographically secure to begin with!
 EOF
 }
 
-optstring=":c:d:"
+hash_cmd=sha512sum
+digits=32
+split=false
+
+optstring=":c:d:s"
 while getopts $optstring opt ; do
     case $opt in
         c)  hash_cmd=$OPTARG ;;
         d)  digits=$OPTARG ;;
+        s)  split=true ;;
         ?)  print_help
-            exit ;;
+        exit ;;
     esac
 done
 shift $(($OPTIND - 1))
 
-echo -n $1 | $hash_cmd | cut -c -$digits | sed 's/..../& /g'
+input=$1
+
+output=$(printf '%s' $input | $hash_cmd | cut -c -$digits)
+if [ "$split" == true ] ; then
+    output=$(sed 's/..../& /g' <<< "$output")
+fi
+
+printf '%s\n' "$output"
