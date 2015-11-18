@@ -37,7 +37,15 @@ while getopts $optstring opt ; do
 done
 shift $(($OPTIND - 1))
 
-input=$1
+read -rsp 'Passphrase: ' input
+printf '\n'
+read -rsp 'Repeat: '     input_repeat
+printf '\n'
+
+if [ "$input" != "$input_repeat" ] ; then
+    printf '%s\n' "Passphrases don't match. Aborting."
+    exit -1
+fi
 
 output=$(printf '%s' $input | $hash_cmd | cut -c -$digits)
 if [ "$split" == true ] ; then
