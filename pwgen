@@ -13,7 +13,7 @@ Usage:
 EOF
 }
 
-optstring=":h:c:d:"
+optstring=":c:d:"
 while getopts $optstring opt ; do
     case $opt in
         c)  hash_cmd=$OPTARG ;;
