@@ -1,0 +1,27 @@
+#!/bin/bash
+
+hash_cmd=sha512sum
+digits=32
+
+print_help() {
+    cat <<EOF
+pwgen - safe password generator
+
+Usage:
+-c   Hash command (default sha512sum).
+-d   Output digits (default 32).
+EOF
+}
+
+optstring=":h:c:d:"
+while getopts $optstring opt ; do
+    case $opt in
+        c)  hash_cmd=$OPTARG ;;
+        d)  digits=$OPTARG ;;
+        ?)  print_help
+            exit ;;
+    esac
+done
+shift $(($OPTIND - 1))
+
+echo -n $1 | $hash_cmd | cut -c -$digits | sed 's/..../& /g'
