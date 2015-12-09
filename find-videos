@@ -1,0 +1,10 @@
+#!/bin/bash
+
+find . \( \
+       -iname "*.mp4" -o \
+       -iname "*.mkv" -o \
+       -iname "*.mpg" -o \
+       -iname "*.m1v" -o \
+       -iname "*.mov" \
+       \) \
+       -print0
