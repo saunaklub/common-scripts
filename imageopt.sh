@@ -48,6 +48,9 @@ Usage: $(basename $0) [options] file
     -o          output directory
                 default: current directory
 
+    -q          output quality
+                default: 90
+
     -w          comma separated list of output widths
                 default: 1920,1366,768,320
 
@@ -72,13 +75,15 @@ checkdeps 1
 # Default options
 output_dir="$CALLDIR"
 output_format="jpg"
+output_quality="90"
 output_widths=(1920 1366 768 320)
 
 # Parse command line options
-while getopts f:o:w: option; do
+while getopts f:o:q:w: option; do
   case $option in
     f) output_format="$OPTARG" ;;
     o) output_dir="$OPTARG" ;;
+    q) output_quality="$OPTARG" ;;
     w) output_widths=($OPTARG) ;;
     h) usage ;;
     \?) usage 1 ;;
@@ -93,7 +98,7 @@ shift $(($OPTIND - 1)); # take out the option flags
 # Convert images
 
 for width in "${output_widths[@]}"; do
-  convert "$1" -strip -resize "$width"x -quality 88\
+  convert "$1" -strip -resize "$width"x -quality "$output_quality"\
           "${output_dir%/}/${1%%.*}-$width.$output_format"
 done
 
