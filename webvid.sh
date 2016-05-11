@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/bin/sh
 
 # Created by Error 800
 
@@ -80,9 +80,6 @@ screen=true
 crop=true
 audio=true
 
-# Check video resolution
-checkres $1
-
 # Parse command line options
 while getopts nrsa:v: option; do
   case $option in
@@ -96,6 +93,9 @@ while getopts nrsa:v: option; do
   esac
 done
 shift $(($OPTIND - 1)); # take out the option flags
+
+# Check video resolution
+checkres $1
 
 # Files
 videofile="$1"
